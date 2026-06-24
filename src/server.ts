@@ -1,6 +1,7 @@
 import app from "./app";
+import config from "./config";
 
-const port = 3000;
+const port = config.port;
 
 const main = () => {
     app.listen(port, () => {

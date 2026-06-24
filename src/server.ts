@@ -3,6 +3,7 @@ import config from "./config";
 import { initDB } from "./db";
 
 const port = config.port;
+console.log(port);
 
 const main = () => {
   initDB();

@@ -37,10 +37,8 @@ const loginUser = async (req: Request, res: Response) => {
       statusCode: 200,
       success: true,
       message: "Login successful",
-      data: result
+      data: result,
     });
-
-
   } catch (error: any) {
     sendResponse(res, {
       statusCode: 500,

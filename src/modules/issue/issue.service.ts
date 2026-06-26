@@ -159,6 +159,7 @@ const deleteIssueFromDB = async (id: string) => {
   );
 
   if (issueResult.rows.length === 0) {
+    // console.log("aaaaaaaa");
     throw new Error("Issue not found");
   }
 

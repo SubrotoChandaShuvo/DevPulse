@@ -65,7 +65,7 @@ const getSingleIssue = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     sendResponse(res, {
-      statusCode: 500,
+      statusCode: 404,
       success: false,
       message: error.message,
       error: error,
@@ -110,7 +110,7 @@ const deleteIssue = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     sendResponse(res, {
-      statusCode: 204,
+      statusCode: 500,
       success: false,
       message: error.message,
       error: error,

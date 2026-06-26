@@ -45,9 +45,9 @@ const getAllIssuesFromDB = async (payload: GET_USER_QUERY) => {
 
   const issuesResult = await pool.query(issues, values);
 
-  const result  = issuesResult.rows;
+  const result = issuesResult.rows;
 
-    // reporter info add
+  // reporter info add
   for (const issue of result) {
     const userResult = await pool.query(
       `
@@ -55,7 +55,7 @@ const getAllIssuesFromDB = async (payload: GET_USER_QUERY) => {
       FROM users
       WHERE id = $1
       `,
-      [issue.reporter_id]
+      [issue.reporter_id],
     );
 
     issue.reporter = userResult.rows[0];
@@ -66,7 +66,40 @@ const getAllIssuesFromDB = async (payload: GET_USER_QUERY) => {
   return result;
 };
 
+const getSingleIssueFromDB = async (payLoad: string) => {
+  console.log(payLoad);
+  const result = await pool.query(
+    `
+        SELECT * FROM issues 
+        WHERE id = $1`,
+    [payLoad],
+  );
+  //   console.log(result.rows[0]);
+  const issue = result.rows[0];
+  const reporterInfo = await pool.query(
+    `
+    SELECT id, name, role FROM users 
+    WHERE id=$1`,
+    [issue.reporter_id],
+  );
+  //   console.log(reporterInfo.rows[0]);
+  //   issue.reporter = reporterInfo.rows[0];
+  //   console.log(issue);
+  delete issue.reporter_id;
+  return {
+    id: issue.id,
+    title: issue.title,
+    description: issue.description,
+    type: issue.type,
+    status: issue.status,
+    reporter: reporterInfo.rows[0],
+    created_at: issue.created_at,
+    updated_at: issue.updated_at,
+  };
+};
+
 export const issueService = {
   createIssueIntoDB,
   getAllIssuesFromDB,
+  getSingleIssueFromDB,
 };

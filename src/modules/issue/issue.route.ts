@@ -8,7 +8,8 @@ const router = Router();
 
 router.post("/", auth(USER_ROLE.contributor, USER_ROLE.maintainer), issueController.createIssue);
 
-router.get('/', issueController.getAllUser);
+router.get('/', issueController.getAllIssue);
+router.get('/:id', issueController.getSingleIssue);
 
 
 export const issueRoute = router;

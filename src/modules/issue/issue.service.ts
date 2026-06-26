@@ -112,14 +112,12 @@ const updateIssueIntoDB = async (id: string, payload: any, user: any) => {
   }
   const issue = issueResult.rows[0];
 
-
-
-//   console.log("Logged User:", user);
-//   console.log("Issue Reporter:", issue.reporter_id);
-//   console.log("Same?", issue.reporter_id === user.id);
-//   console.log("Same?", id === user.id);
-//   console.log(typeof issue.reporter_id);
-//   console.log(typeof user.id);
+  //   console.log("Logged User:", user);
+  //   console.log("Issue Reporter:", issue.reporter_id);
+  //   console.log("Same?", issue.reporter_id === user.id);
+  //   console.log("Same?", id === user.id);
+  //   console.log(typeof issue.reporter_id);
+  //   console.log(typeof user.id);
 
   // check for contributor
   if (user.role !== "maintainer") {
@@ -150,9 +148,35 @@ const updateIssueIntoDB = async (id: string, payload: any, user: any) => {
   return result.rows[0];
 };
 
+const deleteIssueFromDB = async (id: string) => {
+  const issueResult = await pool.query(
+    `
+    SELECT *
+    FROM issues
+    WHERE id = $1
+    `,
+    [id],
+  );
+
+  if (issueResult.rows.length === 0) {
+    throw new Error("Issue not found");
+  }
+
+  // Delete
+  await pool.query(
+    `
+    DELETE FROM issues
+    WHERE id = $1
+    `,
+    [id],
+  );
+  return ;
+};
+
 export const issueService = {
   createIssueIntoDB,
   getAllIssuesFromDB,
   getSingleIssueFromDB,
   updateIssueIntoDB,
+  deleteIssueFromDB,
 };

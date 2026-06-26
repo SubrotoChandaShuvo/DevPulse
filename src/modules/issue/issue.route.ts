@@ -3,13 +3,20 @@ import { issueController } from "./issue.controller";
 import auth from "../../middleware/middleware.auth";
 import { USER_ROLE } from "../../types";
 
-
 const router = Router();
 
-router.post("/", auth(USER_ROLE.contributor, USER_ROLE.maintainer), issueController.createIssue);
+router.post(
+  "/",
+  auth(USER_ROLE.contributor, USER_ROLE.maintainer),
+  issueController.createIssue,
+);
 
-router.get('/', issueController.getAllIssue);
-router.get('/:id', issueController.getSingleIssue);
-
+router.get("/", issueController.getAllIssue);
+router.get("/:id", issueController.getSingleIssue);
+router.patch(
+  "/:id",
+  auth(USER_ROLE.contributor, USER_ROLE.maintainer),
+  issueController.updateIssue,
+);
 
 export const issueRoute = router;
